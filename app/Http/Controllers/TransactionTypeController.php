@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Validator;
 
 use App\easyfinance\Model\TransactionType;
-use App\easyfinance\Dal\TransactionTypeDal;
+use App\easyfinance\Dal\TransactionTypeDAL;
 
 class TransactionTypeController extends Controller
 {
