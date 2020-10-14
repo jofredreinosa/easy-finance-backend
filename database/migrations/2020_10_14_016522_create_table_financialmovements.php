@@ -13,7 +13,7 @@ class CreateTableFinancialMovements extends Migration
      */
     public function up()
     {
-        Schema::create('financial-movements', function (Blueprint $table) {
+        Schema::create('financialmovements', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
 
@@ -25,8 +25,8 @@ class CreateTableFinancialMovements extends Migration
 
             $table->index('idtype','i_financial_movements_idtype');
 
-            $table->foreign('idtype', 'fk_financial-movements_to_transaction-types')
-            ->references('id')->on('transaction-types')
+            $table->foreign('idtype', 'fk_financialmovements_to_transactiontypes')
+            ->references('id')->on('transactiontypes')
             ->onUpdate('RESTRICT')
             ->onDelete('RESTRICT');
         });
@@ -39,11 +39,11 @@ class CreateTableFinancialMovements extends Migration
      */
     public function down()
     {
-        Schema::table('trlibrbanc', function(Blueprint $table)
+        Schema::table('financialmovements', function(Blueprint $table)
         {
-            $table->dropForeign('fk_financial-movements_to_transaction-types');
+            $table->dropForeign('fk_financialmovements_to_transactiontypes');
         });
 
-        Schema::dropIfExists('financial-movements');
+        Schema::dropIfExists('financialmovements');
     }
 }

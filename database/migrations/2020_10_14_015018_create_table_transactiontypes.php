@@ -13,7 +13,7 @@ class CreateTableTransactionTypes extends Migration
      */
     public function up()
     {
-        Schema::create('transaction-types', function (Blueprint $table) {
+        Schema::create('transactiontypes', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
 
@@ -33,6 +33,6 @@ class CreateTableTransactionTypes extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaction-types');
+        Schema::dropIfExists('transactiontypes');
     }
 }

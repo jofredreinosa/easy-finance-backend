@@ -8,7 +8,7 @@ use App\easyfinance\Model\FinancialMovement;
 
 class TransactionType extends Model
 {
-	protected $table = 'transaction-types';
+	protected $table = 'transactiontypes';
 	
 	public function movements()
   {
