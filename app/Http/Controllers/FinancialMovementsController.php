@@ -124,9 +124,12 @@ class FinancialMovementsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getResults()
+    public function getResults($desde,$hasta)
     {
-      $result = $this->FinancialMovementDAL->getResult();
+      $desde = is_null($desde) || empty($desde) || $desde == 'null' ? date('1970-01-01') : $desde;
+      $hasta = is_null($hasta) || empty($hasta) || $hasta == 'null' ? date('2100-12-31') : $hasta;
+      
+      $result = $this->FinancialMovementDAL->getResult($desde,$hasta);
 
       return response()->json([
           'data' => $result,

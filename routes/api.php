@@ -22,4 +22,4 @@ Route::apiResource('transactiontype', 'TransactionTypeController');
 
 Route::apiResource('movement', 'FinancialMovementsController');
 
-Route::get('result', 'FinancialMovementsController@getResults');
+Route::get('result/{desde}/{hasta}', 'FinancialMovementsController@getResults');

@@ -66,13 +66,16 @@ class FinancialMovementDAL
       * Devolver resultado de los movimientos
       * @return \Illuminate\Support\Collection
     */
-    public function getResult() {
+    public function getResult($desde, $hasta) {
+
         $result = DB::table('financialmovements')
         ->select('transactiontypes.operationtype', 'transactiontypes.desctype',
         DB::raw("count(financialmovements.id) as quantity"),
         DB::raw("sum(financialmovements.transactionamount) as total"),
         DB::raw("trim(to_char(sum(financialmovements.transactionamount),'999G999G999D99')) as formattedTotal"))
         ->join('transactiontypes', 'financialmovements.idtype', '=', 'transactiontypes.id')
+        ->where('financialmovements.transactiondate', '>=', $desde)
+        ->where('financialmovements.transactiondate', '<=', $hasta)
         ->groupBy('transactiontypes.operationtype', 'transactiontypes.desctype')
         ->get();
 
