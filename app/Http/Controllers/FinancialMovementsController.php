@@ -120,6 +120,28 @@ class FinancialMovementsController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $movement = $this->FinancialMovementDAL->deleteMovement($id);
+
+        if( ! $movement ) {
+          return response()->json([
+              'message' => 'Ocurrió un error al eliminar el movimiento',
+              'errors' => []
+          ], 404);
+        }
+
+        return response()->json([
+            'message' => 'El movimiento fue eliminado con éxito.',
+        ], 200);
+      }
+
+    /**
      * Retrieve movements results.
      *
      * @return \Illuminate\Http\Response

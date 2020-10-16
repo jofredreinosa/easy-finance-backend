@@ -70,7 +70,7 @@ class TransactionTypeController extends Controller
 
         $transactionType = $this->TransactionTypeDAL->createTransactionType($request);
 
-        if ( $transactionType ) {
+        if ( ! $transactionType ) {
           return response()->json([
               'message' => 'Error al Crear el tipo de transacción',
               'errors' => []
@@ -145,17 +145,17 @@ class TransactionTypeController extends Controller
      */
     public function destroy($id)
     {
-        $transactionType = $this->TransactionTypeDAL->inactivateTransactionType($id);
+        $transactionType = $this->TransactionTypeDAL->deleteTransactionType($id);
 
         if( ! $transactionType ) {
           return response()->json([
-              'message' => 'No se encontró el tipo de transacción a inactivar',
+              'message' => 'No se encontró el tipo de transacción a eliminar o tiene movimientos asociados',
               'errors' => []
           ], 404);
         }
 
         return response()->json([
-            'message' => 'El tipo de transacción fue inactivado con éxito.',
+            'message' => 'El tipo de transacción fue eliminado con éxito.',
         ], 200);
       }
 }

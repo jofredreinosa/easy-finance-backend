@@ -2,6 +2,7 @@
 
 namespace App\easyfinance\Dal;
 use App\easyfinance\Model\FinancialMovement;
+use \Illuminate\Database\QueryException;
 use DB;
 
 /**
@@ -60,6 +61,21 @@ class FinancialMovementDAL
           $movement->save();
         }
         return $movement;
+    }
+
+    /**
+      * Elimina un movimiento
+      * @param int $id 
+      * @return Object
+      */ 
+    public function deleteMovement($id) {
+      try {
+        $movement = FinancialMovement::where('id', $id)->delete();
+        return $movement;
+      }
+      catch (QueryException $e) {
+        return false;
+      }
     }
 
     /**

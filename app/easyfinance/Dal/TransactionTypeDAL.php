@@ -3,7 +3,7 @@
 namespace App\easyfinance\Dal;
 use DB;
 use App\easyfinance\Model\TransactionType;
-
+use \Illuminate\Database\QueryException;
 /**
  * Capa de Acceso a Datos para el Modelo TransactionType
  */
@@ -66,16 +66,17 @@ class TransactionTypeDAL
     }
 
     /**
-      * Actualiza un Tipo de transacción
+      * Elimina un Tipo de transacción
       * @param int $id 
       * @return Object
       */ 
-    public function inactivateTransactionType($id) {
-        $transactionType = TransactionType::where('id', $id)->first();
-        if ( $transactionType ) {
-            $transactionType->statustype = 'I';
-            $transactionType->save();
-        }
+    public function deleteTransactionType($id) {
+      try {
+        $transactionType = TransactionType::where('id', $id)->delete();
         return $transactionType;
+      }
+      catch (QueryException $e) {
+        return false;
+      }
     }
 }
