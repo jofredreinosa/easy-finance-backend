@@ -61,28 +61,25 @@ class TransactionTypeController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), $this->rules, $this->validationMessages);
-        if ( ! $validation->fails() ) {
-
-            $transactionType = $this->TransactionTypeDAL->createTransactionType($request);
-
-            if ( $transactionType ) {
-                return response()->json([
-                    'message' => 'Tipo de transacción creado con éxito',
-                ], 201);
-            }
-            else {
-                return response()->json([
-                    'message' => 'Error al Crear el tipo de transacción',
-                    'errors' => []
-                ], 422);
-            }
+        if ( $validation->fails() ) {
+          return response()->json([
+              'message' => 'Error al crear el tipo de transacción',
+              'errors' => $validation->errors(),
+          ], 422);
         }
-        else {
-            return response()->json([
-                'message' => 'Error al crear el tipo de transacción',
-                'errors' => $validation->errors(),
-            ], 422);
+
+        $transactionType = $this->TransactionTypeDAL->createTransactionType($request);
+
+        if ( $transactionType ) {
+          return response()->json([
+              'message' => 'Error al Crear el tipo de transacción',
+              'errors' => []
+          ], 422);
         }
+
+        return response()->json([
+            'message' => 'Tipo de transacción creado con éxito',
+        ], 201);
     }
 
     /**
@@ -116,38 +113,28 @@ class TransactionTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $transactionType = $this->TransactionTypeDAL->getOneTransactionType($id);
-        
-        if ( ! $transactionType ) {
-            return response()->json([
-                'message' => 'Error al actualizar el tipo de transacción ' . 'El identificador [' . $id . '] NO existe.',
-                'errors' => []
-            ], 404);
-        }
-        else {
-            $validation = Validator::make($request->all(), $this->rules, $this->validationMessages);
-            if ( ! $validation->fails() ) {
-                $transactionType = $this->TransactionTypeDAL->updateTransactionType($transactionType->id , $request);
 
-                if( $transactionType ) {
-                    return response()->json([
-                        'message' => 'El tipo de transacción fue Actualizado con éxito.',
-                    ], 200);
-                }
-                else {
-                    return response()->json([
-                        'message' => 'Error al actualizar el tipo de transacción 1',
-                        'errors' => []
-                    ], 422);
-                }
-            }
-            else {
-                return response()->json([
-                    'message' => 'Error al actualizar el tipo de transacción 2',
-                    'errors' => $validation->errors(),
-                ], 422);
-            }
-        } 
+      $validation = Validator::make($request->all(), $this->rules, $this->validationMessages);
+
+      if ( $validation->fails() ) {
+        return response()->json([
+            'message' => 'Error al actualizar el tipo de transacción',
+            'errors' => $validation->errors(),
+        ], 422);
+      }
+
+      $transactionType = $this->TransactionTypeDAL->updateTransactionType($id , $request);
+
+      if( ! $transactionType ) {
+        return response()->json([
+            'message' => 'No se encontró el tipo de transacción a actualizar',
+            'errors' => []
+        ], 404);
+      }
+      
+      return response()->json([
+          'message' => 'El tipo de transacción fue Actualizado con éxito.',
+      ], 200);
     }
 
     /**
@@ -158,28 +145,17 @@ class TransactionTypeController extends Controller
      */
     public function destroy($id)
     {
-        $transactionType = $this->TransactionTypeDAL->getOneTransactionType($id);
+        $transactionType = $this->TransactionTypeDAL->inactivateTransactionType($id);
 
-        if ( ! $transactionType ) {
-            return response()->json([
-                'message' => 'Error al inactivar el tipo de transacción ' . 'El identificador [' . $id . '] NO existe.',
-                'errors' => []
-            ], 404);
+        if( ! $transactionType ) {
+          return response()->json([
+              'message' => 'No se encontró el tipo de transacción a inactivar',
+              'errors' => []
+          ], 404);
         }
-        else {
-            $transactionType = $this->TransactionTypeDAL->inactivateTransactionType($id);
 
-            if( $transactionType ) {
-                return response()->json([
-                    'message' => 'El tipo de transacción fue inactivado con éxito.',
-                ], 200);
-            }
-            else {
-                return response()->json([
-                    'message' => 'Error al inactivar el tipo de transacción',
-                    'errors' => []
-                ], 422);
-            }
-        } 
-    }
+        return response()->json([
+            'message' => 'El tipo de transacción fue inactivado con éxito.',
+        ], 200);
+      }
 }

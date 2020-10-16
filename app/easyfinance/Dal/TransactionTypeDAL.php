@@ -23,6 +23,7 @@ class TransactionTypeDAL
 
     /**
      * Devolver un tipo de Transacción
+     * @param int $id 
      * @return \Illuminate\Support\Collection
     */
     public function getOneTransactionType($id) {
@@ -67,7 +68,6 @@ class TransactionTypeDAL
     /**
       * Actualiza un Tipo de transacción
       * @param int $id 
-      * @param \Illuminate\Http\Request $data 
       * @return Object
       */ 
     public function inactivateTransactionType($id) {
